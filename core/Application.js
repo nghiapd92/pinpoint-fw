@@ -57,7 +57,7 @@ module.exports = class Application{
 		//Khởi tạo Module Object
 		let confs = require(process.cwd() + basePath + "/module");	
 		let plugableModule = new BaseModule(confs);
-		let authMiddleware = this.httpAuth | this._auth;
+		let authMiddleware = this.httpAuth || this._auth;
 
 		if(!this.registeredModules[confs.name]){
 			//Đăng kí module vào trong application
