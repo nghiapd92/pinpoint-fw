@@ -14,13 +14,13 @@ class APIException extends Error{
 		this.responseObject = responseObject;
 
 		console.log(`
-			-------<Exception>-------
-			Code: ${this.code} | Message: ${this.message}
+-------<Exception>-------
+Code: ${this.code} | Message: ${this.message}
 
-			----
+----
 
-			${this.stack}
-			-------</Exception>-------
+${this.stack}
+-------</Exception>-------
 		`);
 		if(ErrorLog){
 			let log = new ErrorLog({
