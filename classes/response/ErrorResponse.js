@@ -1,11 +1,7 @@
+const Exception = require("../Exception");
+
 module.exports = class ErrorResponse{
-	constructor(error, responseObject){
-		let errorCode = error.code;
-		let errorMessage = error.message;
-		return {
-			code : errorCode,
-			message : errorMessage,
-			response: responseObject
-		}
+	constructor(_error){
+		return Exception.resolve(_error);
 	}
 }

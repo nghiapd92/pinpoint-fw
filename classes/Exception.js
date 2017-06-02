@@ -17,11 +17,12 @@ class APIException extends Error{
 -------<Exception>-------
 Code: ${this.code} | Message: ${this.message}
 
-----
+<---- ${new Date} ---->
 
 ${this.stack}
 -------</Exception>-------
 		`);
+		
 		if(ErrorLog){
 			let log = new ErrorLog({
 				name : this.name,
