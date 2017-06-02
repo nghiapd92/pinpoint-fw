@@ -13,6 +13,8 @@ class APIException extends Error{
 		this.traceMessage = traceMessage;
 		this.responseObject = responseObject;
 
+		this.ppException = true;
+
 		console.log(`
 -------<Exception>-------
 Code: ${this.code} | Message: ${this.message}
@@ -22,7 +24,7 @@ Code: ${this.code} | Message: ${this.message}
 ${this.stack}
 -------</Exception>-------
 		`);
-		
+
 		if(ErrorLog){
 			let log = new ErrorLog({
 				name : this.name,
@@ -45,8 +47,8 @@ ${this.stack}
     }
   }
 
-	static resolve(err){
-		if(err.traceMessage) return err
+	static parse(err){
+		if(err.ppException) return err
 
 		let e = (err.constructor.name == "MongooseError" || err.name == "MongoError") 
 								? new this(2000, Language("UNDEFINED_DATABASE_EXCEPTION"), err.code + " | " + err.message, err.stack)
