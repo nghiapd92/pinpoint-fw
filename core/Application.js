@@ -16,38 +16,43 @@ const BaseModule = require("./BaseModule");
  */
 module.exports = class Application{
 	constructor(options){
-		// this.httpServer = options.httpServer;
-		// this.socketServer = options.socketServer;
-		this.dbSetup = options.dbSetup;
+		// DB Setup
+		this.dbSetup 						= options.dbSetup ? options.dbSetup : Promise.resolve();
 		
-		this.httpServer = options.httpServer;
-		this.httpPort = options.httpPort;
+		//HTTP Server setup
+		if(options.httpServer || options.httpPort) throw new Error("Missing httpServer or httpPort");
+		this.httpServer 				= options.httpServer;
+		this.httpPort 					= options.httpPort;
+		this.httpAuth 					= options.httpAuth;
 
-		this.socketServer = options.socketServer;
+		this.socketServer 			= options.socketServer;
 
-		this.modules = options.modules;
+		this.modules 						= options.modules;
 
-		this.registeredModules = {};
+		this.registeredModules 	= {};
 	}
 
 	_auth(req, res, next){
-		let token = req.body.token || req.query.token || req.headers['x-access-token'];
+		if(this.httpAuth) return this.httpAuth(req, res, next);
+		else {
+			let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-		if (token) {
-			jwt.verify(token, Config('app').TOKEN_SECRET, function(err, decoded) {      
-				if (err) {
-					let exception = new APIException(1000, Language("INVALID_TOKEN"));
-					res.send(exception.toObject()); 
-				} else {
+			if (token) {
+				jwt.verify(token, Config('app').TOKEN_SECRET, function(err, decoded) {      
+					if (err) {
+						let exception = new APIException(1000, Language("INVALID_TOKEN"));
+						res.send(exception.toObject()); 
+					} else {
 
-					req.user = decoded;    
-					next();
-				}
-			});
+						req.user = decoded;    
+						next();
+					}
+				});
 
-		} else {
-			let exception = new APIException(1000, Language("INVALID_TOKEN"));
-			res.send(exception.toObject());
+			} else {
+				let exception = new APIException(1000, Language("INVALID_TOKEN"));
+				res.send(exception.toObject());
+			}
 		}
 	}
 

@@ -51,8 +51,8 @@ ${this.stack}
 		if(err.ppException) return err
 
 		let e = (err.constructor.name == "MongooseError" || err.name == "MongoError") 
-								? new this(2000, Language("UNDEFINED_DATABASE_EXCEPTION"), err.code + " | " + err.message, err.stack)
-								: new this(9999, Language("UNDEFINED_EXCEPTION"), err.message, err.stack);
+								? new this(2000, Language("UNDEFINED_DATABASE_EXCEPTION"), err.code + " | " + err.message)
+								: new this(9999, Language("UNDEFINED_EXCEPTION"), err.message);
 
 		return e;
 	}
