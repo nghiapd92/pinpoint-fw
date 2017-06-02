@@ -33,26 +33,23 @@ module.exports = class Application{
 	}
 
 	_auth(req, res, next){
-		if(this.httpAuth) return this.httpAuth(req, res, next);
-		else {
-			let token = req.body.token || req.query.token || req.headers['x-access-token'];
+		let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-			if (token) {
-				jwt.verify(token, Config('app').TOKEN_SECRET, function(err, decoded) {      
-					if (err) {
-						let exception = new APIException(1000, Language("INVALID_TOKEN"));
-						res.send(exception.toObject()); 
-					} else {
+		if (token) {
+			jwt.verify(token, Config('app').TOKEN_SECRET, function(err, decoded) {      
+				if (err) {
+					let exception = new APIException(1000, Language("INVALID_TOKEN"));
+					res.send(exception.toObject()); 
+				} else {
 
-						req.user = decoded;    
-						next();
-					}
-				});
+					req.user = decoded;    
+					next();
+				}
+			});
 
-			} else {
-				let exception = new APIException(1000, Language("INVALID_TOKEN"));
-				res.send(exception.toObject());
-			}
+		} else {
+			let exception = new APIException(1000, Language("INVALID_TOKEN"));
+			res.send(exception.toObject());
 		}
 	}
 
@@ -60,6 +57,7 @@ module.exports = class Application{
 		//Khởi tạo Module Object
 		let confs = require(process.cwd() + basePath + "/module");	
 		let plugableModule = new BaseModule(confs);
+		let authMiddleware = this.httpAuth | this._auth;
 
 		if(!this.registeredModules[confs.name]){
 			//Đăng kí module vào trong application
@@ -69,12 +67,12 @@ module.exports = class Application{
 			if(plugableModule.auth){
 				if(plugableModule.auth instanceof Array){
 					for(let moduleRoute of plugableModule.auth){
-						this.httpServer.use(endpoint + moduleRoute, this._auth);
+						this.httpServer.use(endpoint + moduleRoute, authMiddleware);
 					}
 				}
 
 				if(plugableModule.auth == "*")
-					this.httpServer.use(endpoint, this._auth);
+					this.httpServer.use(endpoint, authMiddleware);
 			}
 
 			this.httpServer.use(endpoint, plugableModule.router);
