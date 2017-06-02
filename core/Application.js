@@ -20,7 +20,7 @@ module.exports = class Application{
 		this.dbSetup 						= options.dbSetup ? options.dbSetup : Promise.resolve();
 		
 		//HTTP Server setup
-		if(options.httpServer || options.httpPort) throw new Error("Missing httpServer or httpPort");
+		if(!options.httpServer || !options.httpPort) throw new Error("Missing httpServer or httpPort");
 		this.httpServer 				= options.httpServer;
 		this.httpPort 					= options.httpPort;
 		this.httpAuth 					= options.httpAuth;
