@@ -9,8 +9,8 @@
   "author": "Pinpoint",
   "license": "ISC",
 	"dependencies": {
-		"@pinpoint/core" : "https://github.com/nghiapd92/pinpoint-core.git#c055d10735685fef3048be5d11945121284ad028",
-		"@pinpoint/application" : "https://github.com/nghiapd92/pinpoint-application.git#659dc9f396fb7431a0583025818c3bcdebdcaf57",
-		"@pinpoint/module" : "https://github.com/nghiapd92/pinpoint-module.git#06eea6a894ffdc02e6abde5469f167f6d5ff1af0"
+		"@pinpoint/core" : "https://github.com/nghiapd92/pinpoint-core.git#1.0.0",
+		"@pinpoint/application" : "https://github.com/nghiapd92/pinpoint-application.git#1.0.0",
+		"@pinpoint/module" : "https://github.com/nghiapd92/pinpoint-module.git#1.0.0"
 	}
 }
