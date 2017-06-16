@@ -9,10 +9,6 @@
   "author": "Pinpoint",
   "license": "ISC",
 	"dependencies": {
-		"express" : "^4.15.3",
-		"co" : "4.6.0",
-		"validator" : "7.0.0",
-		"jsonwebtoken" : "7.4.1",
-		"mongoose" : "4.10.2"
+		
 	}
 }
