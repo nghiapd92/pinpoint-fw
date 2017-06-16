@@ -38,6 +38,12 @@ module.exports = class Validator{
 			try { //Do thư viện validator chỉ hỗ trợ kiểm tra String do đó cần try catch trong trường hợp dữ liệu null
 
 				validateValue = validateValue.toString();
+
+				//Nếu rule là "Required" và validateValue rỗng trả về lỗi luôn
+				if(ruleType == "Required" && validateValue.length == 0){
+					errs = [message]; break;
+				}
+				
 				valid = libValidator["is" + ruleType](validateValue, args);
 
 			} catch(validateError){
