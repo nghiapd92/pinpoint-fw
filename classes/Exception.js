@@ -21,7 +21,7 @@ Code: ${this.code} | Message: ${this.message}
 
 <---- ${new Date} ---->
 
-${this.stack}
+${this.code == 9999 ? this.responseObject : this.stack}
 -------</Exception>-------
 		`);
 
@@ -40,19 +40,19 @@ ${this.stack}
 	}
 
 	toObject(){
-    return {
-      code 			: this.code,
-      message 	: this.message,
-      response 	: this.responseObject
-    }
-  }
+		return {
+			code 		: this.code,
+			message 	: this.message,
+			response 	: this.code == 9999 ? "" : this.responseObject
+		}
+	}
 
 	static parse(err){
 		if(err.ppException) return err
 
 		let e = (err.constructor.name == "MongooseError" || err.name == "MongoError") 
 								? new this(2000, Language("UNDEFINED_DATABASE_EXCEPTION"), err.code + " | " + err.message)
-								: new this(9999, Language("UNDEFINED_EXCEPTION"), err.message);
+								: new this(9999, Language("UNDEFINED_EXCEPTION"), err.message, err.stack);
 
 		return e;
 	}
